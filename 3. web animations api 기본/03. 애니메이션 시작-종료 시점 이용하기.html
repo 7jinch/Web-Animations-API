@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Animation API</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background: dodgerblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+
+    <script>
+      const box = document.querySelector('.box');
+
+      const keyframes = [
+        { transform: 'translateX(0)', opacity: 0 },
+        { transform: 'translateX(-50px)', opacity: 1, offset: 0.6 },
+        { transform: 'translateX(200px)', opacity: 0.5 },
+      ];
+
+      const options = {
+        duration: 1000,
+        easing: 'linear',
+        fill: 'forwards',
+        // iterations: Infinity,
+        // direction: 'alternate',
+      };
+
+      const animation = box.animate(keyframes, options);
+
+      console.log(animation.finished); // finished는 promise임
+
+      // finished: 애니메이션이 종료되면 실행되는 메서드
+      // animation 객체가 콜백함수의 매개변수로 들어감
+      animation.finished.then((ani) => {
+        console.log('애니메이션 종료!');
+        // console.log(ani == animation); // true
+      });
+    </script>
+  </body>
+</html>

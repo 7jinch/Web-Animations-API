@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Animation API</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background: dodgerblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+
+    <script>
+      const box = document.querySelector('.box');
+
+      // 키프레임
+      const keyframes = [
+        // 변화시킬 css 속성을 객체 형태로 넣어줌
+        { transform: 'translateX(0)', opacity: 0 }, // 시작 위치, 투명도 0
+        { transform: 'translateX(-50px)', opacity: 1, offset: 0.6 }, // 재생 시간 중 60%일 때의 키프레임
+        { transform: 'translateX(200px)', opacity: 0.5 }, // 최종 위치, 투명도 0.5
+      ];
+
+      // 옵션
+      const options = {
+        duration: 1000, // 재생 시간은 1초
+        easing: 'linear', // 움직이는 타이밍(속도)는 일정
+        fill: 'forwards', // 애니메이션 종료 후 그대로 있음
+        iterations: 3, // 반복 횟수는 3번
+        direction: 'alternate', // 첫 위치로 돌아가서 왔다갔다하는 느낌
+      };
+
+      box.animate(keyframes, options);
+    </script>
+  </body>
+</html>
