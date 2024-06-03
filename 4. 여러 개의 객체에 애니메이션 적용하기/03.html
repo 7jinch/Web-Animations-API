@@ -45,7 +45,7 @@
       function set3DPoint(x, y, z) {
         const scale = zModifier / (zModifier + z); // transform에 적용할 변수
         const x2D = x * scale + canvasWidth * 0.5; // 화면 중앙으로 이동시키기
-        const y2D = y * scale + window.innerHeight * 0.5; // 화면 중앙으로 이동시키기
+        const y2D = y * scale + canvasHeight * 0.5; // 화면 중앙으로 이동시키기
 
         return [x2D, y2D, scale];
       }
