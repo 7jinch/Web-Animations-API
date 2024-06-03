@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Starfield</title>
+    <style>
+      body {
+        overflow: hidden;
+        background-color: black;
+      }
+
+      .star {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        font-size: 0;
+        border-radius: 50%;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations-next.min.js"
+      integrity="sha512-7/fijTA9Hz7UI8uTqERZ89YumtyKAO4QJ1IvsHCqr7SX26X8FrGDyn2+oMt571I0VeceUiA8WZxCBOZorHxB6Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="module">
+      import Star from './Star.js'; // Star 생성자 모듈 불러오기
+
+      const numberOfStars = 200; // 별의 수
+      const canvasWidth = window.innerWidth;
+      const canvasHeight = window.innerHeight;
+      const zModifier = window.innerHeight; // z좌표는 그냥 화면 높이만큼으로 설정해줌
+      const effects = [];
+
+      let x, y, z;
+      let scale;
+      let pointFrom, pointTo; // x, y, z 좌표를 계산해서 담을 변수
+      let star;
+      let keyframes, options;
+
+      function set3DPoint(x, y, z) {
+        const scale = zModifier / (zModifier + z); // transform에 적용할 변수
+        const x2D = x * scale + canvasWidth * 0.5; // 화면 중앙으로 이동시키기
+        const y2D = y * scale + window.innerHeight * 0.5; // 화면 중앙으로 이동시키기
+
+        return [x2D, y2D, scale];
+      }
+
+      for (let i = 0; i < numberOfStars; i++) {
+        x = Math.random() * canvasWidth - canvasWidth * 0.5; // x는 화면 가로 길이의 절반
+        y = Math.random() * canvasHeight - canvasHeight * 0.5; // y는 화면 세로 길이의 절반
+        z = Math.random() * zModifier;
+
+        scale = zModifier / (zModifier + z);
+
+        pointFrom = set3DPoint(x, y, z);
+        pointTo = set3DPoint(x, y, z - zModifier);
+
+        star = new Star(i); // Star 생성자로 별 생성
+
+        keyframes = [
+          {
+            transform: `
+      			translate(${pointFrom[0]}px, ${pointFrom[1]}px)
+      			scale(${pointFrom[2]})`,
+          },
+          {
+            transform: `
+      			translate(${pointTo[0]}px, ${pointTo[1]}px)
+      			scale(${pointTo[2]})`,
+          },
+        ];
+
+        options = {
+          duration: 1000 / scale, // scale이 클 수록 더 빨리 다가오는 효과
+          iterations: Infinity,
+          fill: 'both',
+          easing: 'linear',
+        };
+
+        effects.push(new KeyframeEffect(star.element, keyframes, options));
+      }
+
+      const groupEffect = new GroupEffect(effects);
+      const animation = document.timeline.play(groupEffect); // animation을 반환받음
+
+      window.addEventListener('click', () => {
+        if (animation.playState === 'paused') {
+          animation.play();
+        } else {
+          animation.pause();
+        }
+      });
+    </script>
+  </body>
+</html>
