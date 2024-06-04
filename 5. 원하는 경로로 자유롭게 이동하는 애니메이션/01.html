@@ -48,5 +48,27 @@
         />
       </svg>
     </div>
+
+    <script>
+      const car = document.querySelector('.car');
+      const track = document.querySelector('.track');
+
+      const keyframes = [
+        { offsetDistance: 0 }, // 요소가 경로를 따라 이동할 거리, 위치를 설정
+        { offsetDistance: '100%' }, // 끝까지 가도록 함
+      ];
+
+      const options = {
+        duration: 1000,
+        iterations: Infinity,
+      };
+
+      const animation = car.animate(keyframes, options);
+
+      track.addEventListener('click', () => {
+        if (animation.playState === 'paused') animation.play();
+        else if (animation.playState === 'running') animation.pause();
+      });
+    </script>
   </body>
 </html>
